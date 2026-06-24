@@ -8,7 +8,8 @@ import {
   Navigation, Store, CalendarDays,
 } from "lucide-react";
 import { ImageWithFallback } from "@/app/components/figma/ImageWithFallback";
-import logoImg from "@/imports/Logo_Letra-SF-1.png";
+import logoImg from "@/imports/Logo Letra-SF.png";
+import logoAltImg from "@/imports/Logo_Letra_Blanco-removebg-preview.png";
 
 // ─── Hooks ───────────────────────────────────────────────────────────────────
 
@@ -111,7 +112,11 @@ function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-5 sm:px-8 flex items-center justify-between h-18 py-3">
         <button onClick={() => scrollTo("#inicio")} className="flex items-center">
-          <ImageWithFallback src={logoImg} alt="Intelcom logo" className="h-10 w-auto object-contain" />
+          <ImageWithFallback
+            src={scrolled ? logoImg : logoAltImg}
+            alt="Intelcom logo"
+            className="h-16 w-auto object-contain"
+          />
         </button>
 
         {/* Desktop */}
@@ -364,7 +369,7 @@ function About() {
   const inView = useInViewport(ref);
 
   const milestones = [
-    { year: "1984", event: "Fundación de Intelcom en Monterrey, N.L." },
+    { year: "1984", event: "Fundación de Intelcom en Cuautitlan Izcalli, EDOMEX" },
     { year: "1995", event: "Expansión a soluciones corporativas y cobertura regional" },
     { year: "2005", event: "Certificación en sistemas analógicos y digitales HD" },
     { year: "2015", event: "Integración de tecnología IP y videovigilancia en la nube" },
@@ -646,9 +651,9 @@ function StoreBanner() {
 
               <div className="grid gap-3">
                 {[
-                  { icon: Store, title: "Nuestra Sucursal", lines: ["Av. Tecnológico 4523, Col. Cumbres", "Monterrey, Nuevo León, C.P. 64610"] },
-                  { icon: CalendarDays, title: "Horario de Atención", lines: ["Lunes a Viernes: 8:00 – 18:00 hrs", "Sábado: 9:00 – 14:00 hrs"] },
-                  { icon: Phone, title: "Contáctanos", lines: ["+52 (81) 8000-1984", "contacto@intelcom.mx"] },
+                  { icon: Store, title: "Nuestra Sucursal", lines: ["Multi Plaza Izcalli , Dr. J. Jiménez Cantú Mz. C-24-C Lt. S-24", "Centro Urbano, 54700 Cuautitlán Izcalli, Méx"] },
+                  { icon: CalendarDays, title: "Horario de Atención", lines: ["Lunes a Viernes: 9:30 – 19:00 hrs", "Sábado: 10:00 – 14:00 hrs"] },
+                  { icon: Phone, title: "Contáctanos", lines: ["+52 55 5881 0066", "intelcom57@gmail.com"] },
                 ].map(({ icon: Icon, title, lines }) => (
                   <div key={title} className="flex items-start gap-4 p-4 sm:p-5 bg-white/5 border border-white/8 rounded-sm hover:bg-white/8 transition-colors">
                     <div className="w-9 h-9 bg-[#338FF2]/15 border border-[#338FF2]/20 flex items-center justify-center flex-shrink-0 rounded-sm">
@@ -708,7 +713,7 @@ function WhyUs() {
                   </div>
                   <div>
                     <p className="text-[#112F4F] font-['Montserrat'] font-bold text-sm uppercase tracking-wide">Instaladores Certificados</p>
-                    <p className="text-slate-500 text-xs font-['Lora']">Hikvision · Dahua · Axis · Hanwha</p>
+                    <p className="text-slate-500 text-xs font-['Lora']">Hikvision · Syscom · Axis · Hanwha</p>
                   </div>
                 </div>
               </div>
@@ -777,9 +782,9 @@ function Contact() {
   };
 
   const contactInfo = [
-    { icon: Phone, label: "Teléfono", value: "+52 (81) 8000-1984", href: "tel:+528180001984" },
+    { icon: Phone, label: "Teléfono", value: "+52 55 5881 0066", href: "tel:+525558810066" },
     { icon: Mail, label: "Correo", value: "contacto@intelcom.mx", href: "mailto:contacto@intelcom.mx" },
-    { icon: MapPin, label: "Ubicación", value: "Monterrey, Nuevo León, México", href: "#" },
+    { icon: MapPin, label: "Ubicación", value: "Cuautitlán Izcalli, Méx", href: "#" },
     { icon: Clock, label: "Horario", value: "Lun–Vie 8:00–18:00 · Sáb 9:00–14:00", href: "#" },
   ];
 
@@ -938,12 +943,12 @@ function Footer() {
             <div className="space-y-3 text-slate-400 text-sm font-['Montserrat']">
               <p className="flex items-center gap-2"><Phone size={13} className="text-[#338FF2] flex-shrink-0" /> +52 (81) 8000-1984</p>
               <p className="flex items-center gap-2"><Mail size={13} className="text-[#338FF2] flex-shrink-0" /> contacto@intelcom.mx</p>
-              <p className="flex items-center gap-2"><MapPin size={13} className="text-[#338FF2] flex-shrink-0" /> Monterrey, N.L., México</p>
+              <p className="flex items-center gap-2"><MapPin size={13} className="text-[#338FF2] flex-shrink-0" /> Cuautitlán Izcalli, Méx</p>
             </div>
           </div>
         </div>
         <div className="border-t border-white/5 pt-8 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-slate-600 text-xs font-['Montserrat']">© 2024 Intelcom · Telecomunicaciones y Seguridad Empresarial · Todos los derechos reservados</p>
+          <p className="text-slate-600 text-xs font-['Montserrat']">© 2026 Intelcom · Telecomunicaciones y Seguridad Empresarial · Todos los derechos reservados</p>
           <p className="text-slate-700 text-xs font-['Montserrat'] font-bold tracking-widest">DESDE 1984</p>
         </div>
       </div>
