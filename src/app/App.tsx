@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, RefObject } from "react";
+import { useState, useEffect, useRef, type RefObject, type FormEvent } from "react";
 import { motion } from "motion/react";
 import {
   Camera, Shield, Wrench, Building2, Home, Factory,
@@ -106,43 +106,51 @@ function Navbar() {
       initial={{ y: -80, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
+      aria-label="Menú principal"
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled ? "bg-white/96 backdrop-blur-md shadow-md shadow-slate-200/60 border-b border-slate-100" : "bg-transparent"
       }`}
     >
       <div className="max-w-7xl mx-auto px-5 sm:px-8 flex items-center justify-between h-18 py-3">
-        <button onClick={() => scrollTo("#inicio")} className="flex items-center">
+        <a href="#inicio" onClick={(e) => { e.preventDefault(); scrollTo("#inicio"); }} className="flex items-center" aria-label="Ir al inicio">
           <ImageWithFallback
             src={scrolled ? logoImg : logoAltImg}
             alt="Intelcom logo"
             className="h-16 w-auto object-contain"
           />
-        </button>
+        </a>
 
         {/* Desktop */}
-        <div className="hidden md:flex items-center gap-6 lg:gap-8">
+        <div className="hidden md:flex items-center gap-6 lg:gap-8" role="menubar" aria-label="Navegación principal">
           {navLinks.map((link) => (
-            <button
+            <a
               key={link.href}
-              onClick={() => scrollTo(link.href)}
+              role="menuitem"
+              href={link.href}
+              onClick={(e) => { e.preventDefault(); scrollTo(link.href); }}
               className={`text-xs font-bold tracking-widest uppercase font-['Montserrat'] transition-colors duration-200 ${
                 scrolled ? "text-slate-500 hover:text-[#205B9C]" : "text-white/80 hover:text-white"
               }`}
             >
               {link.label}
-            </button>
+            </a>
           ))}
-          <button
-            onClick={() => scrollTo("#contacto")}
+          <a
+            href="#contacto"
+            onClick={(e) => { e.preventDefault(); scrollTo("#contacto"); }}
             className="ml-2 px-5 py-2.5 bg-[#205B9C] text-white text-xs font-bold tracking-widest uppercase font-['Montserrat'] hover:bg-[#194778] transition-colors duration-200 rounded-sm"
           >
             Cotizar
-          </button>
+          </a>
         </div>
 
         {/* Mobile toggle */}
         <button
+          type="button"
           onClick={() => setOpen(!open)}
+          aria-expanded={open}
+          aria-controls="mobile-menu"
+          aria-label={open ? "Cerrar menú" : "Abrir menú"}
           className={`md:hidden p-2 rounded ${scrolled ? "text-[#205B9C]" : "text-white"}`}
         >
           {open ? <X size={22} /> : <Menu size={22} />}
@@ -152,25 +160,31 @@ function Navbar() {
       {/* Mobile drawer */}
       {open && (
         <motion.div
+          id="mobile-menu"
+          role="menu"
+          aria-label="Menú móvil"
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
           className="md:hidden bg-white border-t border-slate-100 px-6 py-6 flex flex-col gap-5 shadow-xl"
         >
           {navLinks.map((link) => (
-            <button
+            <a
               key={link.href}
-              onClick={() => scrollTo(link.href)}
+              role="menuitem"
+              href={link.href}
+              onClick={(e) => { e.preventDefault(); scrollTo(link.href); }}
               className="text-left text-xs font-bold tracking-widest uppercase font-['Montserrat'] text-slate-600 hover:text-[#205B9C] transition-colors"
             >
               {link.label}
-            </button>
+            </a>
           ))}
-          <button
-            onClick={() => scrollTo("#contacto")}
+          <a
+            href="#contacto"
+            onClick={(e) => { e.preventDefault(); scrollTo("#contacto"); }}
             className="mt-1 px-5 py-3 bg-[#205B9C] text-white text-xs font-bold tracking-widest uppercase font-['Montserrat'] rounded-sm text-center"
           >
             Solicitar Cotización
-          </button>
+          </a>
         </motion.div>
       )}
     </motion.nav>
@@ -199,7 +213,7 @@ function Hero() {
       {/* Rotating background images */}
       {heroImages.map((src, i) => (
         <div key={i} className="absolute inset-0 transition-opacity duration-1200" style={{ opacity: activeImg === i ? 1 : 0 }}>
-          <img src={src} alt="" className="w-full h-full object-cover" />
+          <img src={src} alt="" aria-hidden="true" className="w-full h-full object-cover" />
         </div>
       ))}
       <div className="absolute inset-0 bg-[#112F4F]/72" />
@@ -633,7 +647,7 @@ function StoreBanner() {
 
                 <div className="flex flex-col sm:flex-row gap-3">
                   <a
-                    href="https://maps.google.com"
+                    href="https://www.google.com/maps/dir//Intelcom,+Multi+Plaza+Izcalli,+Dr.+J.+Jiménez+Cantú+Mz.+C-24-C+Lt.+S-24,+Centro+Urbano,+54700+Cuautitlán+Izcalli,+Méx./@19.6539471,-99.2009822,15z/data=!4m8!4m7!1m0!1m5!1m1!1s0x85d21e3940c04d21:0x55be2d9a24bcb51c!2m2!1d-99.2077844!2d19.6488824?entry=ttu&g_ep=EgoyMDI2MDYyMy4wIKXMDSoASAFQAw%3D%3D"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#338FF2] text-white font-bold tracking-widest uppercase text-xs font-['Montserrat'] hover:bg-[#2A77C9] transition-colors rounded-sm"
@@ -641,7 +655,7 @@ function StoreBanner() {
                     <Navigation size={14} /> Cómo Llegar
                   </a>
                   <a
-                    href="tel:+528180001984"
+                    href="tel:+525558810066"
                     className="inline-flex items-center justify-center gap-2 px-6 py-3 border border-white/20 text-white font-bold tracking-widest uppercase text-xs font-['Montserrat'] hover:bg-white/8 transition-colors rounded-sm"
                   >
                     <Phone size={14} /> Llamar Ahora
@@ -652,7 +666,7 @@ function StoreBanner() {
               <div className="grid gap-3">
                 {[
                   { icon: Store, title: "Nuestra Sucursal", lines: ["Multi Plaza Izcalli , Dr. J. Jiménez Cantú Mz. C-24-C Lt. S-24", "Centro Urbano, 54700 Cuautitlán Izcalli, Méx"] },
-                  { icon: CalendarDays, title: "Horario de Atención", lines: ["Lunes a Viernes: 9:30 – 19:00 hrs", "Sábado: 10:00 – 14:00 hrs"] },
+                  { icon: CalendarDays, title: "Horario de Atención", lines: ["Lunes a Viernes: 10: – 18:30 hrs", "Sábado: 10:00 – 14:00 hrs"] },
                   { icon: Phone, title: "Contáctanos", lines: ["+52 55 5881 0066", "intelcom57@gmail.com"] },
                 ].map(({ icon: Icon, title, lines }) => (
                   <div key={title} className="flex items-start gap-4 p-4 sm:p-5 bg-white/5 border border-white/8 rounded-sm hover:bg-white/8 transition-colors">
@@ -768,28 +782,59 @@ function WhyUs() {
 
 // ─── Contact ──────────────────────────────────────────────────────────────────
 
+type ContactFormData = {
+  name: string;
+  email: string;
+  phone: string;
+  service: string;
+  message: string;
+};
+
 function Contact() {
   const ref = useRef(null);
   const inView = useInViewport(ref);
-  const [form, setForm] = useState({ name: "", email: "", phone: "", service: "", message: "" });
+  const [form, setForm] = useState<ContactFormData>({ name: "", email: "", phone: "", service: "", message: "" });
+  const [submittedForm, setSubmittedForm] = useState<ContactFormData | null>(null);
   const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setSent(true);
-    setTimeout(() => setSent(false), 4000);
-    setForm({ name: "", email: "", phone: "", service: "", message: "" });
+    setLoading(true);
+    setErrorMessage(null);
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+
+      const data = await response.json().catch(() => null);
+      if (!response.ok) {
+        throw new Error(data?.error || "No se pudo enviar la solicitud. Intenta de nuevo más tarde.");
+      }
+
+      setSent(true);
+      setSubmittedForm(form);
+      setForm({ name: "", email: "", phone: "", service: "", message: "" });
+    } catch (error) {
+      setErrorMessage(error instanceof Error ? error.message : "Error inesperado en el envío.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const contactInfo = [
     { icon: Phone, label: "Teléfono", value: "+52 55 5881 0066", href: "tel:+525558810066" },
-    { icon: Mail, label: "Correo", value: "contacto@intelcom.mx", href: "mailto:contacto@intelcom.mx" },
-    { icon: MapPin, label: "Ubicación", value: "Cuautitlán Izcalli, Méx", href: "#" },
+    { icon: Mail, label: "Correo", value: "contacto@intelcom.mx", href: "mailto:intelcom57@gmail.com" },
+    { icon: MapPin, label: "Ubicación", value: "Cuautitlán Izcalli, Méx", href: "https://www.google.com/maps/dir//Intelcom,+Multi+Plaza+Izcalli,+Dr.+J.+Jiménez+Cantú+Mz.+C-24-C+Lt.+S-24,+Centro+Urbano,+54700+Cuautitlán+Izcalli,+Méx./@19.6539471,-99.2009822,15z/data=!4m8!4m7!1m0!1m5!1m1!1s0x85d21e3940c04d21:0x55be2d9a24bcb51c!2m2!1d-99.2077844!2d19.6488824?entry=ttu&g_ep=EgoyMDI2MDYyMy4wIKXMDSoASAFQAw%3D%3D" },
     { icon: Clock, label: "Horario", value: "Lun–Vie 8:00–18:00 · Sáb 9:00–14:00", href: "#" },
   ];
 
   return (
-    <section id="contacto" className="py-20 sm:py-28 bg-white">
+    <section id="contacto" aria-labelledby="contact-heading" className="py-20 sm:py-28 bg-white">
       <div className="max-w-7xl mx-auto px-5 sm:px-8">
         <div ref={ref} className="grid lg:grid-cols-2 gap-12 lg:gap-20">
           <div>
@@ -801,6 +846,7 @@ function Contact() {
               — Hablemos
             </motion.p>
             <motion.h2
+              id="contact-heading"
               initial={{ opacity: 0, y: 30 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.1, duration: 0.7 }}
@@ -848,18 +894,23 @@ function Contact() {
             <form onSubmit={handleSubmit} className="space-y-4 bg-slate-50 border border-slate-100 p-6 sm:p-8 rounded-sm">
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[10px] font-bold tracking-widest uppercase font-['Montserrat'] text-slate-500 mb-2">Nombre</label>
+                  <label htmlFor="name" className="block text-[10px] font-bold tracking-widest uppercase font-['Montserrat'] text-slate-500 mb-2">Nombre</label>
                   <input
-                    type="text" required value={form.name}
+                    id="name"
+                    type="text"
+                    required
+                    value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
                     className="w-full px-4 py-3 bg-white border border-slate-200 text-[#112F4F] font-['Montserrat'] text-sm focus:outline-none focus:border-[#205B9C] transition-colors rounded-sm placeholder-slate-300"
                     placeholder="Juan García"
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] font-bold tracking-widest uppercase font-['Montserrat'] text-slate-500 mb-2">Teléfono</label>
+                  <label htmlFor="phone" className="block text-[10px] font-bold tracking-widest uppercase font-['Montserrat'] text-slate-500 mb-2">Teléfono</label>
                   <input
-                    type="tel" value={form.phone}
+                    id="phone"
+                    type="tel"
+                    value={form.phone}
                     onChange={(e) => setForm({ ...form, phone: e.target.value })}
                     className="w-full px-4 py-3 bg-white border border-slate-200 text-[#112F4F] font-['Montserrat'] text-sm focus:outline-none focus:border-[#205B9C] transition-colors rounded-sm placeholder-slate-300"
                     placeholder="+52 (81) 0000-0000"
@@ -867,17 +918,21 @@ function Contact() {
                 </div>
               </div>
               <div>
-                <label className="block text-[10px] font-bold tracking-widest uppercase font-['Montserrat'] text-slate-500 mb-2">Correo Electrónico</label>
+                <label htmlFor="email" className="block text-[10px] font-bold tracking-widest uppercase font-['Montserrat'] text-slate-500 mb-2">Correo Electrónico</label>
                 <input
-                  type="email" required value={form.email}
+                  id="email"
+                  type="email"
+                  required
+                  value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
                   className="w-full px-4 py-3 bg-white border border-slate-200 text-[#112F4F] font-['Montserrat'] text-sm focus:outline-none focus:border-[#205B9C] transition-colors rounded-sm placeholder-slate-300"
                   placeholder="juan@empresa.com"
                 />
               </div>
               <div>
-                <label className="block text-[10px] font-bold tracking-widest uppercase font-['Montserrat'] text-slate-500 mb-2">Tipo de Servicio</label>
+                <label htmlFor="service" className="block text-[10px] font-bold tracking-widest uppercase font-['Montserrat'] text-slate-500 mb-2">Tipo de Servicio</label>
                 <select
+                  id="service"
                   value={form.service}
                   onChange={(e) => setForm({ ...form, service: e.target.value })}
                   className="w-full px-4 py-3 bg-white border border-slate-200 text-[#112F4F] font-['Montserrat'] text-sm focus:outline-none focus:border-[#205B9C] transition-colors rounded-sm"
@@ -893,9 +948,11 @@ function Contact() {
                 </select>
               </div>
               <div>
-                <label className="block text-[10px] font-bold tracking-widest uppercase font-['Montserrat'] text-slate-500 mb-2">Mensaje</label>
+                <label htmlFor="message" className="block text-[10px] font-bold tracking-widest uppercase font-['Montserrat'] text-slate-500 mb-2">Mensaje</label>
                 <textarea
-                  rows={4} value={form.message}
+                  id="message"
+                  rows={4}
+                  value={form.message}
                   onChange={(e) => setForm({ ...form, message: e.target.value })}
                   className="w-full px-4 py-3 bg-white border border-slate-200 text-[#112F4F] font-['Montserrat'] text-sm focus:outline-none focus:border-[#205B9C] transition-colors resize-none rounded-sm placeholder-slate-300"
                   placeholder="Cuéntanos sobre tu proyecto: número de cámaras, área a cubrir..."
@@ -903,10 +960,31 @@ function Contact() {
               </div>
               <button
                 type="submit"
-                className="w-full py-4 bg-[#205B9C] text-white font-bold tracking-widest uppercase text-xs font-['Montserrat'] hover:bg-[#194778] transition-all duration-200 hover:shadow-lg hover:shadow-[#205B9C]/20 flex items-center justify-center gap-2 rounded-sm"
+                disabled={loading}
+                className={`w-full py-4 text-white font-bold tracking-widest uppercase text-xs font-['Montserrat'] transition-all duration-200 flex items-center justify-center gap-2 rounded-sm ${loading ? 'bg-slate-400 cursor-not-allowed' : 'bg-[#205B9C] hover:bg-[#194778] hover:shadow-lg hover:shadow-[#205B9C]/20'}`}
               >
-                {sent ? <><CheckCircle size={16} /> Mensaje Enviado — Gracias</> : <>Solicitar Cotización <ArrowRight size={14} /></>}
+                {loading ? <>Enviando...</> : sent ? <><CheckCircle size={16} /> Mensaje Enviado — Gracias</> : <>Solicitar Cotización <ArrowRight size={14} /></>}
               </button>
+              {errorMessage ? (
+                <p role="alert" aria-live="assertive" className="text-sm text-rose-600 font-['Montserrat']">{errorMessage}</p>
+              ) : null}
+              {sent && submittedForm ? (
+                <div role="status" aria-live="polite" className="mt-4 rounded-sm border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900 font-['Montserrat']">
+                  <p className="font-semibold">Solicitud enviada</p>
+                  <p>En breve nos comunicaremos con el cliente.</p>
+                  <p className="mt-2">También puedes confirmar el envío por WhatsApp:</p>
+                  <a
+                    href={`https://wa.me/5519165383?text=${encodeURIComponent(
+                      `Hola Intelcom, acabo de enviar una solicitud de cotización de ${submittedForm.name} para el servicio ${submittedForm.service || 'no especificado'}. Mi teléfono es ${submittedForm.phone || 'no proporcionado'}.`)
+                    }`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block mt-2 px-4 py-2 bg-[#25D366] text-white text-xs font-bold uppercase tracking-widest rounded-sm"
+                  >
+                    Enviar WhatsApp de confirmación
+                  </a>
+                </div>
+              ) : null}
             </form>
           </motion.div>
         </div>
@@ -964,13 +1042,15 @@ export default function App() {
       <style>{globalStyles}</style>
       <ScrollProgress />
       <Navbar />
-      <Hero />
-      <Stats />
-      <About />
-      <Services />
-      <StoreBanner />
-      <WhyUs />
-      <Contact />
+      <main id="main-content" role="main">
+        <Hero />
+        <Stats />
+        <About />
+        <Services />
+        <StoreBanner />
+        <WhyUs />
+        <Contact />
+      </main>
       <Footer />
     </div>
   );
