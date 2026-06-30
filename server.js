@@ -75,7 +75,7 @@ app.post("/api/contact", async (req, res) => {
   try {
     await transporter.sendMail({
       from: `${name} <${process.env.EMAIL_USER}>`,
-      to: "intelcom57@gmail.com",
+      to: process.env.CONTACT_EMAIL || "intelcom57@gmail.com",
       subject,
       text,
       html,

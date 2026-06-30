@@ -1,0 +1,21 @@
+.info-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 1rem;
+  border-radius: 0.25rem;
+  background-color: transparent;
+  border: 1px solid transparent;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.625rem; /* text-xs */
+  letter-spacing: 0.08em; /* approx tracking-widest */
+  cursor: default;
+}
+
+.info-label:focus,
+.info-label:hover {
+  /* prevent hover/active styles from implying interactivity */
+  background-color: transparent !important;
+  border-color: transparent !important;
+}

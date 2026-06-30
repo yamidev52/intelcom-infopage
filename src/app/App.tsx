@@ -10,6 +10,8 @@ import {
 import { ImageWithFallback } from "@/app/components/figma/ImageWithFallback";
 import logoImg from "@/imports/Logo Letra-SF.png";
 import logoAltImg from "@/imports/Logo_Letra_Blanco-removebg-preview.png";
+import SocialButtons from "./components/ui/SocialButtons";
+import { SITE, getWhatsAppLink } from "@/config/siteConfig";
 
 // ─── Hooks ───────────────────────────────────────────────────────────────────
 
@@ -542,17 +544,12 @@ function Services() {
 
             <div className="flex gap-2 flex-wrap">
               {clientTypes.map(({ icon: Icon, label }, i) => (
-                <button
+                <div
                   key={i}
-                  onClick={() => setActiveClient(i)}
-                  className={`flex items-center gap-2 px-4 py-2.5 border rounded-sm transition-all duration-200 text-xs font-bold tracking-widest uppercase font-['Montserrat'] ${
-                    activeClient === i
-                      ? "border-[#205B9C] bg-[#205B9C] text-white"
-                      : "border-slate-200 text-slate-500 hover:border-[#205B9C]/50 hover:text-[#205B9C]"
-                  }`}
+                  className="flex items-center gap-2 px-4 py-2.5 border border-[#205B9C] bg-[#205B9C] text-white rounded-sm text-xs font-bold tracking-widest uppercase font-['Montserrat'] cursor-default"
                 >
                   <Icon size={14} /> {label}
-                </button>
+                </div>
               ))}
             </div>
           </div>
@@ -647,7 +644,7 @@ function StoreBanner() {
 
                 <div className="flex flex-col sm:flex-row gap-3">
                   <a
-                    href="https://www.google.com/maps/dir//Intelcom,+Multi+Plaza+Izcalli,+Dr.+J.+Jiménez+Cantú+Mz.+C-24-C+Lt.+S-24,+Centro+Urbano,+54700+Cuautitlán+Izcalli,+Méx./@19.6539471,-99.2009822,15z/data=!4m8!4m7!1m0!1m5!1m1!1s0x85d21e3940c04d21:0x55be2d9a24bcb51c!2m2!1d-99.2077844!2d19.6488824?entry=ttu&g_ep=EgoyMDI2MDYyMy4wIKXMDSoASAFQAw%3D%3D"
+                    href={SITE.address.mapUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#338FF2] text-white font-bold tracking-widest uppercase text-xs font-['Montserrat'] hover:bg-[#2A77C9] transition-colors rounded-sm"
@@ -655,7 +652,7 @@ function StoreBanner() {
                     <Navigation size={14} /> Cómo Llegar
                   </a>
                   <a
-                    href="tel:+525558810066"
+                    href={SITE.phones.primaryHref}
                     className="inline-flex items-center justify-center gap-2 px-6 py-3 border border-white/20 text-white font-bold tracking-widest uppercase text-xs font-['Montserrat'] hover:bg-white/8 transition-colors rounded-sm"
                   >
                     <Phone size={14} /> Llamar Ahora
@@ -665,9 +662,9 @@ function StoreBanner() {
 
               <div className="grid gap-3">
                 {[
-                  { icon: Store, title: "Nuestra Sucursal", lines: ["Multi Plaza Izcalli , Dr. J. Jiménez Cantú Mz. C-24-C Lt. S-24", "Centro Urbano, 54700 Cuautitlán Izcalli, Méx"] },
+                  { icon: Store, title: "Nuestra Sucursal", lines: ["Multi Plaza Izcalli , Dr. J. Jiménez Cantú Mz. C-24-C Lt. S-24", SITE.address.display] },
                   { icon: CalendarDays, title: "Horario de Atención", lines: ["Lunes a Viernes: 10: – 18:30 hrs", "Sábado: 10:00 – 14:00 hrs"] },
-                  { icon: Phone, title: "Contáctanos", lines: ["+52 55 5881 0066", "intelcom57@gmail.com"] },
+                  { icon: Phone, title: "Contáctanos", lines: [SITE.phones.primary, SITE.email.contact] },
                 ].map(({ icon: Icon, title, lines }) => (
                   <div key={title} className="flex items-start gap-4 p-4 sm:p-5 bg-white/5 border border-white/8 rounded-sm hover:bg-white/8 transition-colors">
                     <div className="w-9 h-9 bg-[#338FF2]/15 border border-[#338FF2]/20 flex items-center justify-center flex-shrink-0 rounded-sm">
@@ -827,9 +824,9 @@ function Contact() {
   };
 
   const contactInfo = [
-    { icon: Phone, label: "Teléfono", value: "+52 55 5881 0066", href: "tel:+525558810066" },
-    { icon: Mail, label: "Correo", value: "contacto@intelcom.mx", href: "mailto:intelcom57@gmail.com" },
-    { icon: MapPin, label: "Ubicación", value: "Cuautitlán Izcalli, Méx", href: "https://www.google.com/maps/dir//Intelcom,+Multi+Plaza+Izcalli,+Dr.+J.+Jiménez+Cantú+Mz.+C-24-C+Lt.+S-24,+Centro+Urbano,+54700+Cuautitlán+Izcalli,+Méx./@19.6539471,-99.2009822,15z/data=!4m8!4m7!1m0!1m5!1m1!1s0x85d21e3940c04d21:0x55be2d9a24bcb51c!2m2!1d-99.2077844!2d19.6488824?entry=ttu&g_ep=EgoyMDI2MDYyMy4wIKXMDSoASAFQAw%3D%3D" },
+    { icon: Phone, label: "Teléfono", value: SITE.phones.primary, href: SITE.phones.primaryHref },
+    { icon: Mail, label: "Correo", value: SITE.email.display, href: `mailto:${SITE.email.contact}` },
+    { icon: MapPin, label: "Ubicación", value: SITE.address.display, href: SITE.address.mapUrl },
     { icon: Clock, label: "Horario", value: "Lun–Vie 8:00–18:00 · Sáb 9:00–14:00", href: "#" },
   ];
 
@@ -883,6 +880,11 @@ function Contact() {
                   </div>
                 </motion.a>
               ))}
+            </div>
+
+            <div className="mt-6">
+              <p className="text-[10px] font-bold tracking-widest uppercase font-['Montserrat'] text-slate-500 mb-3">Síguenos</p>
+              <SocialButtons />
             </div>
           </div>
 
@@ -974,9 +976,9 @@ function Contact() {
                   <p>En breve nos comunicaremos con el cliente.</p>
                   <p className="mt-2">También puedes confirmar el envío por WhatsApp:</p>
                   <a
-                    href={`https://wa.me/5519165383?text=${encodeURIComponent(
-                      `Hola Intelcom, acabo de enviar una solicitud de cotización de ${submittedForm.name} para el servicio ${submittedForm.service || 'no especificado'}. Mi teléfono es ${submittedForm.phone || 'no proporcionado'}.`)
-                    }`}
+                    href={getWhatsAppLink(
+                      `Hola Intelcom, acabo de enviar una solicitud de cotización de ${submittedForm.name} para el servicio ${submittedForm.service || 'no especificado'}. Mi teléfono es ${submittedForm.phone || 'no proporcionado'}.`
+                    )}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-block mt-2 px-4 py-2 bg-[#25D366] text-white text-xs font-bold uppercase tracking-widest rounded-sm"
@@ -997,37 +999,29 @@ function Contact() {
 
 function Footer() {
   return (
-    <footer className="bg-[#0d2540] border-t border-white/5 py-12 sm:py-14">
-      <div className="max-w-7xl mx-auto px-5 sm:px-8">
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-10 mb-10">
-          <div>
-            <ImageWithFallback src={logoImg} alt="Intelcom logo" className="h-9 w-auto object-contain mb-5" />
-            <p className="text-slate-400 text-sm font-['Lora'] leading-relaxed">
-              Telecomunicaciones y Seguridad Empresarial. 40 años protegiendo hogares, empresas y corporativos en México.
-            </p>
-          </div>
-          <div>
-            <h5 className="text-white font-['Montserrat'] font-bold uppercase tracking-widest text-xs mb-5">Servicios</h5>
-            <ul className="space-y-2.5">
-              {["Instalación CCTV", "Mantenimiento", "Reparación", "Monitoreo Remoto", "Control de Acceso", "Redes IP"].map((s) => (
-                <li key={s}>
-                  <span className="text-slate-400 text-sm font-['Montserrat'] hover:text-[#338FF2] transition-colors cursor-pointer">{s}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <h5 className="text-white font-['Montserrat'] font-bold uppercase tracking-widest text-xs mb-5">Contacto</h5>
-            <div className="space-y-3 text-slate-400 text-sm font-['Montserrat']">
-              <p className="flex items-center gap-2"><Phone size={13} className="text-[#338FF2] flex-shrink-0" /> +52 (81) 8000-1984</p>
-              <p className="flex items-center gap-2"><Mail size={13} className="text-[#338FF2] flex-shrink-0" /> contacto@intelcom.mx</p>
-              <p className="flex items-center gap-2"><MapPin size={13} className="text-[#338FF2] flex-shrink-0" /> Cuautitlán Izcalli, Méx</p>
-            </div>
-          </div>
+    <footer className="bg-[#0d2540] border-t border-white/5 py-8 sm:py-10">
+      <div className="max-w-7xl mx-auto px-5 sm:px-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+        <div className="flex items-center gap-4">
+          <ImageWithFallback src={logoAltImg} alt="Intelcom logo blanco" className="h-13 w-auto object-contain" />
         </div>
-        <div className="border-t border-white/5 pt-8 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-slate-600 text-xs font-['Montserrat']">© 2026 Intelcom · Telecomunicaciones y Seguridad Empresarial · Todos los derechos reservados</p>
-          <p className="text-slate-700 text-xs font-['Montserrat'] font-bold tracking-widest">DESDE 1984</p>
+
+        <div className="text-slate-400 text-sm font-['Montserrat'] space-y-2">
+          <p className="flex items-center gap-2">
+            <Phone size={14} className="text-[#338FF2] flex-shrink-0" />
+            <a href={SITE.phones.footerHref} className="hover:text-white">{SITE.phones.footer}</a>
+          </p>
+          <p className="flex items-center gap-2">
+            <Mail size={14} className="text-[#338FF2] flex-shrink-0" />
+            <a href={`mailto:${SITE.email.contact}`} className="hover:text-white">{SITE.email.display}</a>
+          </p>
+          <p className="flex items-center gap-2">
+            <MapPin size={14} className="text-[#338FF2] flex-shrink-0" />
+            <a href={SITE.address.mapUrl} target="_blank" rel="noopener noreferrer" className="hover:text-white">{SITE.address.display}</a>
+          </p>
+        </div>
+
+        <div className="w-full sm:w-auto text-slate-300 text-xs font-['Montserrat'] mt-4 sm:mt-0">
+          © {new Date().getFullYear()} {SITE.companyName}
         </div>
       </div>
     </footer>
