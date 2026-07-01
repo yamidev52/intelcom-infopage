@@ -247,9 +247,9 @@ function Hero() {
             className="font-['Montserrat'] font-black uppercase leading-none text-white mb-5"
             style={{ fontSize: "clamp(2.8rem, 7vw, 5.5rem)", letterSpacing: "-0.02em" }}
           >
-            Seguridad
-            <span className="block text-[#338FF2]">Profesional</span>
-            <span className="block text-white/60" style={{ fontSize: "0.65em", fontWeight: 700 }}>Para Tu Empresa y Hogar</span>
+            Ingeniera en
+            <span className="block text-[#338FF2]">Telecomunicaciones</span>
+            <span className="block text-white/60" style={{ fontSize: "0.65em", fontWeight: 700 }}>y Seguridad Electronica</span>
           </motion.h1>
 
           <motion.p
