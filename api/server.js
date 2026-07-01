@@ -1,20 +1,6 @@
-import express from "express";
-import cors from "cors";
 import nodemailer from "nodemailer";
-import dotenv from "dotenv";
 
-dotenv.config();
-
-const app = express();
-app.use(cors());
-app.use(express.json());
-
-const PORT = process.env.PORT || 5174;
-
-if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-  console.warn("⚠️ Faltan variables de entorno EMAIL_USER y EMAIL_PASS. Revisa .env o la configuración del servidor.");
-}
-
+// Verificar credenciales una sola vez fuera de la función (optimiza rendimiento)
 const hasCredentials = Boolean(process.env.EMAIL_USER && process.env.EMAIL_PASS);
 
 let transporter = null;
@@ -25,15 +11,6 @@ if (hasCredentials) {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASS,
     },
-  });
-
-  transporter.verify((error) => {
-    if (error) {
-      console.error("SMTP verification failed:", error);
-    } else {
-      const user = process.env.EMAIL_USER ?? "<no user>";
-      console.log(`SMTP listo. Envíos desde ${user}`);
-    }
   });
 }
 
@@ -46,11 +23,28 @@ function escapeHtml(value = "") {
     .replace(/'/g, "&#39;");
 }
 
-app.post("/api/contact", async (req, res) => {
+// Vercel exporta una función por defecto que maneja la petición
+export default async function handler(req, res) {
+  // Manejo de CORS manual para que tu React pueda consultarlo desde producción
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
+
+  // Si es una petición de tipo OPTIONS (preflight de CORS), respondemos con 200
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
+  // Solo permitimos peticiones POST
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: "Método no permitido" });
+  }
+
   const { name, email, phone, service, message } = req.body ?? {};
 
   if (!hasCredentials || !transporter) {
-    return res.status(500).json({ error: "No hay credenciales SMTP configuradas. Crea un archivo .env con EMAIL_USER y EMAIL_PASS." });
+    return res.status(500).json({ error: "No hay credenciales SMTP configuradas en las variables de entorno de Vercel." });
   }
 
   if (!name || !email || !service) {
@@ -87,8 +81,4 @@ app.post("/api/contact", async (req, res) => {
     console.error("Error sending contact email:", error);
     return res.status(500).json({ error: "Error interno al enviar el correo." });
   }
-});
-
-app.listen(PORT, () => {
-  console.log(`API de contacto corriendo en http://localhost:${PORT}`);
-});
+}
